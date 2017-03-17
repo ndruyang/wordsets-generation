@@ -9,7 +9,8 @@ def main():
 	r = int(input("What should the range of the median be? \n"))
 	f = input("what is the path to the file? \n")
 
-	make_sets(n, s, m, r, f)
+	wordsets = make_sets(n, s, m, r, f)
+	write_to_csv(wordsets)
 
 #----------------------------------------------------------------------
 # Makes n number of sets with the indicated median +- range 
@@ -23,9 +24,10 @@ def make_sets(n, sets, median, r, csvPath):
 	wordsets = {}
 
 	for i in range(sets):
-		wordsets['Set' + str(i+1)] = make_set(n, median, r, words)
+		wordsets['Set' + str(i+1)], indices = make_set(n, median, r, words)
+		delete_items(words, indices)
 
-	print(wordsets['Set1'])
+	return wordsets
 
 #----------------------------------------------------------------------
 # Takes csvFile, store each row into the dictionary as a
@@ -43,10 +45,11 @@ def store_words(csvPath):
 	return words
 
 #----------------------------------------------------------------------
-# Makes a single set of given n, median, and range
+# Makes a single set of given n, median, and range, and the
+# indices that comprise the set
 #
 # takes: Int, Int, Int, Dict
-# returns: Dict
+# returns: Dict, List
 def make_set(n, median, r, words):
 	frequencies = list(words.values())
 	wordlist = list(words.keys())
@@ -66,9 +69,7 @@ def make_set(n, median, r, words):
 	for i in indices:
 		wordset[wordlist[i]] = frequencies[i]
 
-	delete_items(words, indices)
-
-	return wordset
+	return wordset, indices
 
 #----------------------------------------------------------------------
 # Produces the indices of intitial words in a list
@@ -94,7 +95,34 @@ def delete_items(words, indices):
 	for i in indices:
 		del words[wordlist[i]]
 
+#----------------------------------------------------------------------
+# Writes to .csv file
+#
+# takes: Dict
+# returns: none
+def write_to_csv(wordsets):
+	sets = list(wordsets.keys())
+	l = []
+	
+	# create columns as lists and append to l
+	for i in sets:
+		words = [i] + list(wordsets[i].keys())
+		frequencies = [''] + list(wordsets[i].values())
+		divider = [''] * len(words)
+		l.append(words)
+		l.append(frequencies)
+		l.append(divider)
+	
+	# transpose l
+	l = list(map(list, zip(*l)))
+
+	with open('wordsets.csv', 'w') as csvfile:
+		writer = csv.writer(csvfile)
+		writer.writerows(l)
+
+
 main()
 
-# tested this
-# make_sets(10,4,100,50,'corpus.csv')
+# tested this (can also just use this)
+# wordsets = make_sets(10,4,100,50,'corpus.csv')
+# write_to_csv(wordsets)
