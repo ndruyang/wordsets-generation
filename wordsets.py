@@ -86,7 +86,6 @@ def make_set(n, average, pdaf, words):
 	
 	return wordset, indices
 
-
 	# if n % 2 == 0:
 	# 	initials = find_initial_indices(2, frequencies, median, r)
 	# 	smaller = random.sample(range(initials[0]), int((n-2)/2))
