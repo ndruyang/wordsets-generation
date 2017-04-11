@@ -93,6 +93,7 @@ newWords = []
 with open('corpus-original.csv', 'r') as f:
 		reader = csv.reader(f)
 		for r in reader:
+			r[0]=r[0].strip()
 			newWords.append(r)
 		print newWords
 		for w in newWords:
@@ -102,7 +103,9 @@ with open('corpus-original.csv', 'r') as f:
 					newWords.remove(w)
 
 
+
+print newWords
 with open('corpus-revamp.csv','w') as csvfile:
 		writer = csv.writer(csvfile)
-		writer.writerows(newWords) 					
-
+		for word in newWords:
+			writer.writerow(word)

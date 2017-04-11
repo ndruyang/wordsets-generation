@@ -2,6 +2,7 @@ import csv
 import random
 import datetime
 
+corpusName = 'corpus-revamp.csv'
 
 def main():
 	# raw_input updated to input in python 3
@@ -169,5 +170,5 @@ def writeparameters(size, sets, ave, pdfa, path):
 # main()
 
 # tested this (can also just use this)
-wordsets = make_sets(10,4,775,50,'corpus.csv')	
+wordsets = make_sets(10,4,775,50,corpusName)	
 write_to_csv(wordsets)
