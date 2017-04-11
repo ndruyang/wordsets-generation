@@ -87,21 +87,22 @@ formattedExistingWords = []
 for e in existingwords:
 	formattedExistingWords.append(e.upper())
 
-formattedExistingWords = set(formattedExistingWords)
+formattedExistingWords = formattedExistingWords
 newWords = []
 
 with open('corpus-original.csv', 'r') as f:
 		reader = csv.reader(f)
 		for r in reader:
 			newWords.append(r)
+		print newWords
 		for w in newWords:
 			for e in formattedExistingWords:
 				if e == w[0]:
+					print "removing"+w[0]
 					newWords.remove(w)
 
-newWords = set(newWords)
+
 with open('corpus-revamp.csv','w') as csvfile:
 		writer = csv.writer(csvfile)
 		writer.writerows(newWords) 					
 
-print newWords
